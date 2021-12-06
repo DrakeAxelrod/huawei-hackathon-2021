@@ -1,6 +1,5 @@
 from .DAG import Graph
 import random
-from copy import deepcopy
 
 graph = Graph()
 n = 5
@@ -21,6 +20,6 @@ for i in graph:
       graph.add_edge(i, new_dep)
 
 print(graph)
-print(graph.cyclic())
-print(graph.topological_sort(0))
+# print(graph.cyclic())
+print(graph.topological_sort())
     

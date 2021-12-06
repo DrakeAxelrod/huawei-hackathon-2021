@@ -1,3 +1,4 @@
+from collections import deque
 class Graph(dict):
 
   def __init__(self,id=0, type=0, arrival=0, deadline=0):
@@ -49,25 +50,36 @@ class Graph(dict):
     """ get all nodes in the graph with no dependencies """
     return [key for key in self if not self[key]]
 
-  def topological_sort(self, start):
-    path = []
-    stack = [start]
-    label = len(self)
-    result = {}
-    while stack != []:
-        #this for loop could be done in other ways also
-        for element in stack:
-            if element not in result:
-                result[element] = label
-                label = label - 1
-        v = stack.pop()
-        if v not in path:
-          path.append(v)
-        for w in reversed(self[v]):
-            if w not in path and not w in stack:
-                stack.append(w)
-    result = {v: k for k, v in result.items()}
-    return path, result
+  def topological_sort(self):
+    """ Returns a topological ordering of the DAG.
+    Raises an error if this is not possible (graph is not valid).
+    """
+    in_degree = {}
+    for u in self:
+      in_degree[u] = 0
+
+    for u in self:
+      for v in self[u]:
+        in_degree[v] += 1
+
+    queue = deque()
+    for u in in_degree:
+      if in_degree[u] == 0:
+        queue.appendleft(u)
+
+    l = []
+    while queue:
+      u = queue.pop()
+      l.append(u)
+      for v in self[u]:
+        in_degree[v] -= 1
+        if in_degree[v] == 0:
+          queue.appendleft(v)
+
+    if len(l) == len(self):
+      return l
+    else:
+      raise ValueError('graph is not acyclic')
 
 
   def cyclic(self):
