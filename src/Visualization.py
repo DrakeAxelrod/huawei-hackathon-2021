@@ -9,12 +9,12 @@ def create_task_gant():
   # Setting X-axis limits
   gnt.set_xlim(0, 160)
   # Setting labels for x-axis and y-axis
-  gnt.set_xlabel('seconds since start')
-  gnt.set_ylabel('Processor')
+  gnt.set_xlabel('microseconds since start')
+  gnt.set_ylabel('Processors')
   # Setting ticks on y-axis
   gnt.set_yticks([15, 25, 35])
   # Labelling tickes of y-axis
-  gnt.set_yticklabels(['1', '2', '3'])
+  gnt.set_yticklabels(['PN1', 'PN2', 'PN3'])
   # Setting graph attribute
   gnt.grid(True)
   # Declaring a bar in schedule

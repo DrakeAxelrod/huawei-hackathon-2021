@@ -1,8 +1,29 @@
 import json
 from src.Graph import Graph
+from src.Processor import Processor
 from src.Task import Task
 import csv
+import os
 
+listOfProcessors: list[Processor] = []
+
+def init_processors(filename):
+  global numberOfProcessers
+  global listOfProcessors
+  testID = 0
+  testCaseNum = filename.split(os.sep)[-1].split('.')[0][4:]
+  if testCaseNum.isdigit():
+      testID = int(testCaseNum)
+  else:
+      testID = None
+  if not testID:
+      NUM_PROCESSORS = 3
+  elif testID < 5:
+      NUM_PROCESSORS = 8
+  else:
+      NUM_PROCESSORS = 6
+  listOfProcessors.extend([Processor() for proc in range(NUM_PROCESSORS)])
+    
 def read_file(filename):
   with open(filename) as f:
     file = json.load(f)
@@ -11,6 +32,7 @@ def read_file(filename):
   
 def read_data(filename) -> list[Graph]:
   """ Reads in a file and populates a list with graph data structures. """
+  init_processors(filename)
   graphList: list[Graph] = []
   data = read_file(filename)
   for dagID, dagData in data.items():

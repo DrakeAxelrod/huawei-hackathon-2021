@@ -63,8 +63,9 @@ class Graph(dict):
     for u in self:
       in_degree[u] = 0
     for u in self:
+      
       for v in self[u]:
-        in_degree[v] += 1
+        in_degree[v[0]] += 1
     queue = deque()
     for u in in_degree:
       if in_degree[u] == 0:
@@ -74,9 +75,9 @@ class Graph(dict):
       u = queue.pop()
       l.append(u)
       for v in self[u]:
-        in_degree[v] -= 1
-        if in_degree[v] == 0:
-          queue.appendleft(v)
+        in_degree[v[0]] -= 1
+        if in_degree[v[0]] == 0:
+          queue.appendleft(v[0])
     if len(l) == len(self):
       return l
     else:
