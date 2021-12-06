@@ -1,4 +1,4 @@
-from .DAG import Graph
+from .Graph import Graph
 import random
 
 graph = Graph()
