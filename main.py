@@ -1,10 +1,11 @@
 import sys
-import src.playground as pg
-#import src.read_data
+from src.Graph import Graph
+#import src.playground as pg
+from src.Reader import read_data
 
-def run(filename, output):
-  pass
+def run():
+  dags: list[Graph] = read_data("./src/sample.json") # returns a list of graphs
+  print(dags)
   
 if __name__ == "__main__":
-  pass
-  # run(sys.argv[1], sys.argv[2])
+  run()

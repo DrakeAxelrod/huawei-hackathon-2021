@@ -1,12 +1,16 @@
 from collections import deque
 class Graph(dict):
 
-  def __init__(self,id=0, type=0, arrival=0, deadline=0):
+  def __init__(self,id: str, type: int, arrival: int, deadline: int):
+    """Create a graph (built ontop of a dictionary) 
+    keys represent nodes and values represent dependencies
+    the connection represents a directed edge"""
     super().__init__()
-    self.id = id
+    self.id: str = id
     self.type = type
     self.arrival = arrival
     self.deadline = deadline
+    self.taskList = {} # just a dict with the key being the task id (Task1: str) pointing to the Task object for referencing
 
   def add_node(self, node_name):
     """ add a node to the graph. """
@@ -14,20 +18,21 @@ class Graph(dict):
       raise KeyError('node %s already exists' % node_name)
     self[node_name] = []
 
-  def add_edge(self, node, dep_node):
+  def add_edge(self, node, dep_node, weight):
     """ add an edge to the graph. """
     if node not in self or dep_node not in self:
       raise KeyError('one or more nodes do not exist in graph')
     else:
-      self[node].append(dep_node)
+      self[node].append((dep_node, weight))
       
   def delete_node(self, node):
     """ Delete a node from the graph. """
     del self[node]
 
-  def delete_edge(self, node, dep_node):
+  # not sure the best way to ref the tuple for deletion
+  def delete_edge(self, node, dep_node, weight):
     """ Delete an edge from the graph. """
-    self[node].remove(dep_node)
+    self[node].remove((dep_node, weight))
 
   def node_predecessors(self, node):
     """ get all a nodes predecessors """
@@ -57,16 +62,13 @@ class Graph(dict):
     in_degree = {}
     for u in self:
       in_degree[u] = 0
-
     for u in self:
       for v in self[u]:
         in_degree[v] += 1
-
     queue = deque()
     for u in in_degree:
       if in_degree[u] == 0:
         queue.appendleft(u)
-
     l = []
     while queue:
       u = queue.pop()
@@ -75,7 +77,6 @@ class Graph(dict):
         in_degree[v] -= 1
         if in_degree[v] == 0:
           queue.appendleft(v)
-
     if len(l) == len(self):
       return l
     else:
@@ -83,8 +84,8 @@ class Graph(dict):
 
 
   def cyclic(self):
-    """Return True if the directed graph g has a cycle.
-    g must be represented as a dictionary mapping vertices to
+    """Return True if the directed graph has a cycle.
+    graph must be represented as a dictionary mapping vertices to
     iterables of neighbouring vertices. For example:
     >>> cyclic({1: (2,), 2: (3,), 3: (1,)})
     True
