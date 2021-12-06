@@ -2,7 +2,7 @@ from collections import deque
 class Graph(dict):
 
   def __init__(self,id: str, type: int, arrival: int, deadline: int):
-    """Create a graph (built ontop of a dictionary) 
+    """Create a graph (built on top of a dictionary) 
     keys represent nodes and values represent dependencies
     the connection represents a directed edge"""
     super().__init__()
@@ -43,7 +43,7 @@ class Graph(dict):
           raise KeyError('node %s is not in graph' % node)
       return list(self[node])
 
-  def all_deps(self):
+  def all_dep(self):
     """ gets all the dependencies within the graph """
     all_deps = set()
     for deps in self.values():
@@ -86,7 +86,7 @@ class Graph(dict):
   def cyclic(self):
     """Return True if the directed graph has a cycle.
     graph must be represented as a dictionary mapping vertices to
-    iterables of neighbouring vertices. For example:
+    iterables of neighboring vertices. For example:
     >>> cyclic({1: (2,), 2: (3,), 3: (1,)})
     True
     >>> cyclic({1: (2,), 2: (3,), 3: (4,)})
@@ -94,16 +94,19 @@ class Graph(dict):
     """
     path = set()
     visited = set()
-
     def visit(vertex):
       if vertex in visited:
         return False
       visited.add(vertex)
       path.add(vertex)
-      for neighbour in self.get(vertex, ()):
-        if neighbour in path or visit(neighbour):
+      for neighbor in self.get(vertex, ()):
+        if neighbor in path or visit(neighbor):
           return True
       path.remove(vertex)
       return False
-
     return any(visit(v) for v in self)
+    
+  def __str__(self):
+    return "<class '%s'>" % self.__class__.__name__ + '\n' \
+    + '\n'.join(('{} = {}'.format(item, self.__dict__[item]) for item in self.__dict__)) \
+    + "\ndict: " + super.__str__(self)

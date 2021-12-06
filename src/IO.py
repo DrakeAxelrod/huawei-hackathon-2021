@@ -1,6 +1,7 @@
 import json
 from src.Graph import Graph
 from src.Task import Task
+import csv
 
 def read_file(filename):
   with open(filename) as f:
@@ -9,8 +10,7 @@ def read_file(filename):
   return file
   
 def read_data(filename) -> list[Graph]:
-  # local list to populate with graphs
-  # I dont know if list is actually the best data structure here
+  """ Reads in a file and populates a list with graph data structures. """
   graphList: list[Graph] = []
   data = read_file(filename)
   for dagID, dagData in data.items():
@@ -45,4 +45,22 @@ def read_data(filename) -> list[Graph]:
     graphList.append(graph)
   return graphList
 
-data = read_data("./src/sample.json")
+def write_data(filename, listOfProcessors, makespan, standard_deviation, utility_function, time_spent):
+      with open(filename, mode='w') as f:
+        writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        for proc in listOfProcessors:
+            procTuples = []
+            for task in proc.tasks:
+                tuple = str(
+                    f"""{task.taskID} {task.startTime} {task.endTime}""")
+                procTuples.append(tuple)
+            writer.writerow(procTuples)
+            
+        # Makespan is the time where all instances of all DAGs of the application are completed.
+        writer.writerow([makespan])
+        # standard deviation of processor loads
+        writer.writerow([standard_deviation])
+        # utility function
+        writer.writerow([utility_function])
+        # execution time of the scheduler (in milliseconds)
+        writer.writerow([time_spent])
