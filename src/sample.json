@@ -1,0 +1,66 @@
+{
+    "DAG0": {
+        "Task0": {
+            "EET": 10,
+            "Type": 0,
+            "next": {
+                "Task1": 1,
+                "Task2": 2
+            }
+        },
+        "Task1": {
+            "EET": 20,
+            "Type": 1,
+            "next": {
+                "Task3": 3
+            }
+        },
+        "Task2": {
+            "EET": 30,
+            "Type": 2,
+            "next": {
+                "Task3": 1
+            }
+        },
+        "Task3": {
+            "EET": 10,
+            "Type": 3,
+            "next": {}
+        },
+        "Type": 1,
+        "ArrivalTime": 0,
+        "Deadline": 60
+    },
+    "DAG1": {
+        "Task1000": {
+            "EET": 10,
+            "Type": 0,
+            "next": {
+                "Task1001": 1,
+                "Task1002": 2
+            }
+        },
+        "Task1001": {
+            "EET": 20,
+            "Type": 1,
+            "next": {
+                "Task1003": 3
+            }
+        },
+        "Task1002": {
+            "EET": 30,
+            "Type": 2,
+            "next": {
+                "Task1003": 1
+            }
+        },
+        "Task1003": {
+            "EET": 10,
+            "Type": 3,
+            "next": {}
+        },
+        "Type": 1,
+        "ArrivalTime": 60,
+        "Deadline": 60
+    }
+}
